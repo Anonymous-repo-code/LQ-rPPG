@@ -1,0 +1,113 @@
+BASE: ['']
+TOOLBOX_MODE: "only_test"      # "train_and_test"  or "only_test"
+TRAIN:
+  AUG: 0
+  BATCH_SIZE: 16
+  LQ_EPOCHS: 30
+  C2F_EPOCHS: 50
+  LR_LQ: [1e-3, 1e-3, 1e-3, 1e-3, 1e-3]
+  LR_C2F: 3e-4
+  LQ_Alpha: 1.0
+  LQ_Beta: 1.0
+  C2F_Alpha: 1.0
+  LQ_PRETRAINED: True
+  LQ_PRETRAINED_PATH: ["./PreTrainedModels/PURE_UBFC_LQC2F_1th_LQ_Epoch10.pth", "./PreTrainedModels/PURE_UBFC_LQC2F_2th_LQ_Epoch11.pth", "./PreTrainedModels/PURE_UBFC_LQC2F_3th_LQ_Epoch19.pth", "./PreTrainedModels/PURE_UBFC_LQC2F_4th_LQ_Epoch22.pth", "./PreTrainedModels/PURE_UBFC_LQC2F_5th_LQ_Epoch10.pth"]  # if VQ_VAE_PRETRAINED is True, this path should be updated
+  C2F_PRETRAINED: True
+  C2F_PRETRAINED_PATH: "./PreTrainedModels/PURE_UBFC_LQC2F_rPPG_Epoch10.pth"
+  MODEL_FILE_NAME: PURE_UBFC_LQC2F
+  DATA:
+    FS: 30
+    DATASET: PURE
+    DO_PREPROCESS: True                 # if first time, should be true
+    DATA_FORMAT: NCDHW
+    DATA_PATH: "./data/PURE"                     # Raw dataset path, need to be updated
+    CACHED_PATH: "./preprocessed_data/PURE"    # Processed dataset save path, need to be updated
+    EXP_DATA_NAME: ""
+    BEGIN: 0.0
+    END: 0.8
+    PREPROCESS :
+      DATA_TYPE: ['Standardized' ]
+      LABEL_TYPE: Standardized
+      DO_CHUNK: True
+      CHUNK_LENGTH: 160
+      CROP_FACE:
+        DO_CROP_FACE: True
+        USE_LARGE_FACE_BOX: True
+        LARGE_BOX_COEF: 1.5
+        DETECTION:
+          DO_DYNAMIC_DETECTION: False
+          DYNAMIC_DETECTION_FREQUENCY : 30
+          USE_MEDIAN_FACE_BOX: False    # This should be used ONLY if dynamic detection is used
+      RESIZE:
+        H: 128
+        W: 128
+VALID:
+  DATA:
+    FS: 30
+    DATASET: PURE
+    DO_PREPROCESS: True                 # if first time, should be true
+    DATA_FORMAT: NCDHW
+    DATA_PATH: "./data/PURE"                     # Raw dataset path, need to be updated
+    CACHED_PATH: "./preprocessed_data/PURE"    # Processed dataset save path, need to be updated
+    EXP_DATA_NAME: ""
+    BEGIN: 0.8
+    END: 1.0
+    PREPROCESS :
+      DATA_TYPE: ['Standardized' ]
+      LABEL_TYPE: Standardized
+      DO_CHUNK: True
+      CHUNK_LENGTH: 160
+      CROP_FACE:
+        DO_CROP_FACE: True
+        USE_LARGE_FACE_BOX: True
+        LARGE_BOX_COEF: 1.5
+        DETECTION:
+          DO_DYNAMIC_DETECTION: False
+          DYNAMIC_DETECTION_FREQUENCY : 30
+          USE_MEDIAN_FACE_BOX: False    # This should be used ONLY if dynamic detection is used
+      RESIZE:
+        H: 128
+        W: 128
+TEST:
+  METRICS: ['MAE','RMSE','MAPE','Pearson','SNR']
+  USE_LAST_EPOCH: False                      # to use provided validation dataset to find the best epoch, should be false
+  DATA:
+    FS: 30
+    DATASET: UBFC-rPPG
+    DO_PREPROCESS: True                 # if first time, should be true
+    DATA_FORMAT: NCDHW
+    DATA_PATH: "./data/UBFC-rPPG"                     # Raw dataset path, need to be updated
+    CACHED_PATH: "./preprocessed_data/UBFC-rPPG"    # Processed dataset save path, need to be updated
+    EXP_DATA_NAME: ""
+    BEGIN: 0.0
+    END: 1.0
+    PREPROCESS :
+      DATA_TYPE: ['Standardized' ]
+      LABEL_TYPE: Standardized
+      DO_CHUNK: True
+      CHUNK_LENGTH: 160
+      CROP_FACE:
+        DO_CROP_FACE: True
+        USE_LARGE_FACE_BOX: True
+        LARGE_BOX_COEF: 1.5
+        DETECTION:
+          DO_DYNAMIC_DETECTION: False
+          DYNAMIC_DETECTION_FREQUENCY : 30
+          USE_MEDIAN_FACE_BOX: False    # This should be used ONLY if dynamic detection is used
+      RESIZE:
+        H: 128
+        W: 128
+DEVICE: cuda:0
+NUM_OF_GPU_TRAIN: 1
+LOG:
+  PATH: runs/exp
+MODEL:
+  NAME: LQC2F
+INFERENCE:
+  BATCH_SIZE: 16
+  EVALUATION_METHOD: "FFT"        # "FFT" or "peak detection"
+  EVALUATION_WINDOW:
+    USE_SMALLER_WINDOW: False        # Change this if you'd like an evaluation window smaller than the test video length
+    WINDOW_SIZE: 10        # In seconds
+  MODEL_PATH:   ""
+                  
