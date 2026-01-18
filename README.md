@@ -1,11 +1,11 @@
-## Overview of LQC2F-rPPG
-LQC2F-rPPG: A Label-Quantized Coarse-to-Fine Learning Framework for Remote Physiological Measurement
+## Overview of LQ-rPPG
+LQ-rPPG: A Label-Quantized Coarse-to-Fine Learning Framework for Remote Physiological Measurement
 <p align="center">
   <img src="images/Overview.png" alt="Framework Overview" width="800"/>
 </p>
 
 ## ⚙️ Setup
-To set up the environment for LQC2F-rPPG, please execute the following script:
+To set up the environment for LQ-rPPG, please execute the following script:
 ```bash
 bash setup.sh
 ```
@@ -14,7 +14,7 @@ This will automatically create a dedicated conda environment and install all nec
 
 
 ## 📁 Datasets
-To use LQC2F-rPPG, it is necessary to prepare appropriate benchmark datasets. Please refer to the following publications for details on each dataset.
+To use LQ-rPPG, it is necessary to prepare appropriate benchmark datasets. Please refer to the following publications for details on each dataset.
 
 - **MMPD (2023)**  
   - Tang, J.; Chen, K.; Wang, Y.; Shi, Y.; Patel, S.; McDuff, D.; and Liu, X. 2023. MMPD: Multi-domain mobile video physiology dataset. In Proceedings of the IEEE Engineering in Medicine and Biology Society, 1–5.
